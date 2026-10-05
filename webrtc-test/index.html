@@ -27,9 +27,18 @@ iframe{width:100%;height:100%;border:0}.note{font-size:11px;line-height:1.7;marg
     frame.onload=()=>{btn.disabled=false;btn.textContent='☎ بدء الاتصال';status.textContent='جاهز للاختبار';};
     btn.onclick=()=>{
       document.getElementById('anonymousWebRTC').style.display='block';
-      status.textContent='بدء الاتصال…';
+      status.textContent='جاري تجهيز الاتصال…';
       const w=frame.contentWindow;
-      if(w&&typeof w.startDevice==='function') w.startDevice(); else status.textContent='SDK لم يجهز بعد، حاول مرة ثانية.';
+      const d=frame.contentDocument || (w&&w.document);
+      if(!(w&&typeof w.startDevice==='function')){status.textContent='SDK لم يجهز بعد، حاول مرة ثانية.';return;}
+      w.startDevice();
+      setTimeout(()=>{
+        try{
+          const b=d&&d.querySelector('.bottom-call-btn');
+          if(b){status.textContent='جاري الاتصال…';b.click();}
+          else status.textContent='زر الاتصال داخل SDK غير جاهز.';
+        }catch(e){status.textContent='تعذر بدء الاتصال.';}
+      },1800);
     };
   }catch(e){status.textContent='تعذر تحميل SDK: '+e.message;btn.textContent='تعذر التجهيز';}
 })();
