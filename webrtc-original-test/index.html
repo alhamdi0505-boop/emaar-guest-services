@@ -13,9 +13,20 @@ h1{font-size:22px}p{line-height:1.8}
 <body>
 <div class="box">
 <h1>اختبار Grandstream SDK الأصلي</h1>
-<p>الزر الذي سيظهر أسفل الصفحة هو زر Grandstream الأصلي من ملف <b>webRTC.js</b>. اضغطه لبدء الاختبار.</p>
+<p>اختبار مباشر للحزمة الأصلية المرفوعة من Grandstream.</p>
 </div>
 <script src="../anonymousWebRTC/jquery-3.6.0.min.js"></script>
-<script src="../anonymousWebRTC/webRTC.js"></script>
+<script>
+/* Keep Grandstream SDK untouched. The SDK expects ./anonymousWebRTC/ relative to the host page,
+   so load its original launcher text and adjust only those host-relative URLs at runtime. */
+fetch('../anonymousWebRTC/webRTC.js',{cache:'no-store'})
+ .then(r=>{if(!r.ok)throw new Error('webRTC.js '+r.status);return r.text();})
+ .then(code=>{
+   code=code.replaceAll('./anonymousWebRTC/','../anonymousWebRTC/');
+   code=code.replaceAll('../anonymousWebRTC/webRTC/images/','../anonymousWebRTC/webRTC/images/');
+   (0,eval)(code);
+ })
+ .catch(e=>{console.error(e);document.querySelector('.box').insertAdjacentHTML('beforeend','<p>تعذر تحميل SDK: '+e.message+'</p>');});
+</script>
 </body>
 </html>
