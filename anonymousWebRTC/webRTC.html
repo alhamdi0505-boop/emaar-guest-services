@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>click2talk</title>
+    <link rel="stylesheet" type="text/css" href="./webRTC/css/common.css?v=1634266640747">
+    <link rel="stylesheet" type="text/css" href="./webRTC/css/main.css?v=1634266640747">
+</head>
+<body class="fx-embedded">
+    <div id="main" style="display: none">
+        <div class="main-title">
+            <img src="./webRTC/images/close.png" alt="" class="btn-close">
+        </div>
+        <div class="main-content">
+            <div class="item">
+                <div class="item-row">
+                    <div id="microphone-text" class="label"></div>
+                    <div id="audioSourceContainer" class="col-right">
+                        <div id="audioSourceText" class="text"></div>
+                        <img src="./webRTC/images/arrow-down.png" alt="" class="down-icon">
+                        <div id="audioSource" class="select-box"></div>
+                    </div>
+                </div>
+                <div class="test">
+                    <div id="audioSourceTestBtn" class="test-btn">
+                        Test
+                    </div>
+                    <div class="test-list">
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                        <div class="list-item audio-source-meter"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-row">
+                    <div id="output-text" class="label"></div>
+                    <div id="audioOutputContainer" class="col-right">
+                        <div id="audioOutputText" class="text"></div>
+                        <img src="./webRTC/images/arrow-down.png" alt="" class="down-icon">
+                        <audio id="soundTest" src="./webRTC/sounds/SoundTest.ogg" loop></audio>
+                        <div id="audioOutput" class="select-box"></div>
+                    </div>
+                </div>
+                <div class="test">
+                    <div id="audioOutputTestBtn" class="test-btn"></div>
+                    <div class="test-list">
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                        <div class="list-item audio-output-meter"></div>
+                    </div>
+                </div>
+                <video id="video" playsinline autoplay></video>
+            </div>
+            <div class="bottom-call-btn">
+                <img src="webRTC/images/call-btn-icon.png" alt="">
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div id="reload" style="display: none">
+        <div class="reload-top">
+            <img src="./webRTC/images/close.png" alt="" class="reload-close-btn">
+        </div>
+        <div class="reload-title"></div>
+        <div class="reload-describe"></div>
+        <div class="image-box">
+            <img src="./webRTC/images/reload-image.png" alt="" class="image">
+            <img src="./webRTC/images/reload-icon.png" alt="" class="icon">
+        </div>
+        <div class="bottom-btn-box">
+            <div class="reload-btn"></div>
+            <div class="known-btn"></div>
+        </div>
+    </div>
+    <div id="calling" style="display: none">
+        <div class="calling-title"></div>
+        <img src="./webRTC/images/calling-icon.png" alt="" class="calling-icon">
+        <audio id="audioMix" autoplay></audio>
+        <div class="hangup-btn">
+            <img src="webRTC/images/hangup-icon.png" alt="" class="calling-btn-icon">
+        </div>
+    </div>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="./jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./debug.js?v=1634266640747"></script>
+    <script type="text/javascript" src="./gsRTC.min.js?v=1634266640747"></script>
+    <script type="text/javascript" src="./webRTC/js/language.js?v=1634266640747"></script>
+    <script type="text/javascript" src="./webRTC/js/main.js?v=1634266640747"></script>
+</body>
+</html>
