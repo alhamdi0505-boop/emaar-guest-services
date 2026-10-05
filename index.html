@@ -20,6 +20,10 @@
 .chat{display:block;margin-top:13px;border:1px solid #d8c6aa;border-radius:17px;padding:15px;text-align:center;text-decoration:none;color:#5f4b34;font-weight:bold}
 .note{font-size:11px;color:#8a8177;text-align:center;line-height:1.7;margin-top:15px}
 footer{text-align:center;color:#967d5c;font:12px Georgia;margin:20px}
+.modal{display:none;position:fixed;inset:0;z-index:9999;background:#000c;align-items:center;justify-content:center;padding:14px}
+.modal.open{display:flex}.modalbox{width:min(100%,520px);height:min(88vh,760px);background:#000;border-radius:22px;overflow:hidden;position:relative;box-shadow:0 20px 60px #0008}
+.modalbar{height:48px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-weight:bold}
+.modalclose{border:0;background:#eee;border-radius:50%;width:32px;height:32px;font-size:20px;cursor:pointer}.modal iframe{width:100%;height:calc(100% - 48px);border:0;background:#000}
 </style></head>
 <body>
 <section class="hero"><div class="logo">E</div><div class="brand">EMAAR AL DIYAFA HOTELS</div><div class="since">SINCE 1998</div></section>
@@ -35,14 +39,20 @@ footer{text-align:center;color:#967d5c;font:12px Georgia;margin:20px}
 <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_8&to_user=service"><span>🏢</span><b data-ar="الإدارة" data-en="Management">الإدارة</b></a>
 <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_3&to_user=service"><span>🤝</span><b data-ar="مساعدة النزلاء" data-en="Guest Assistance">مساعدة النزلاء</b></a>
 <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_4&to_user=service"><span>🍽️</span><b data-ar="خدمة الغرف" data-en="Room Service">خدمة الغرف</b></a>
-<a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_5&to_user=service"><span>🛡️</span><b data-ar="الأمن" data-en="Security">الأمن</b></a>
+<a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_5&to_user=service" id="securityCall"><span>🛡️</span><b data-ar="الأمن" data-en="Security">الأمن</b></a>
 <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_6&to_user=service"><span>🔧</span><b data-ar="الصيانة" data-en="Maintenance">الصيانة</b></a>
 <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_7&to_user=service"><span>🧹</span><b data-ar="الإشراف الداخلي" data-en="Housekeeping">الإشراف الداخلي</b></a>
 </div>
 <a class="chat" href="https://emaargrand.a.gdms.cloud/liveChat/?liveChatAccess=MF80NDgxMDVlMzgzMjY0NTE5ODNhYTdjY2ExZDU4ZWFjNV9lYzc0ZDc4NTE0ZWUmODEwOTQxNTVhM2VlOGE4OTY0ZGE3YmVhYTk2ZjcyYjE="><span>💬</span> <span data-ar="المحادثة المباشرة" data-en="Live Chat">المحادثة المباشرة</span></a>
 <p class="note" id="note">قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.</p>
-</main><footer>EMAAR AL DIYAFA HOTELS · MAKKAH</footer>
+</main>
+<div class="modal" id="callModal" aria-hidden="true"><div class="modalbox"><div class="modalbar"><span id="modalTitle">الأمن</span><button class="modalclose" id="modalClose" aria-label="Close">×</button></div><iframe id="callFrame" allow="microphone; camera; autoplay"></iframe></div></div>
+<footer>EMAAR AL DIYAFA HOTELS · MAKKAH</footer>
 <script>
+const callModal=document.getElementById('callModal'),callFrame=document.getElementById('callFrame');
+document.getElementById('securityCall').addEventListener('click',e=>{e.preventDefault();document.getElementById('modalTitle').textContent=document.documentElement.lang==='en'?'Security':'الأمن';callFrame.src=e.currentTarget.href;callModal.classList.add('open');callModal.setAttribute('aria-hidden','false');});
+document.getElementById('modalClose').onclick=()=>{callModal.classList.remove('open');callModal.setAttribute('aria-hidden','true');callFrame.src='about:blank';};
+callModal.addEventListener('click',e=>{if(e.target===callModal)document.getElementById('modalClose').click();});
 let en=false;
 document.getElementById('lang').onclick=()=>{en=!en;document.documentElement.dir=en?'ltr':'rtl';document.documentElement.lang=en?'en':'ar';document.getElementById('lang').textContent=en?'العربية':'English';document.getElementById('title').textContent=en?'Guest Services':'خدمات النزلاء';document.getElementById('intro').innerHTML=en?"<strong>IMPORTANT NOTICE</strong><br>\nWe are currently upgrading the hotel telephone system. The telephone service may be temporarily unavailable in certain areas.<br><br>\nWe sincerely apologize for any inconvenience and appreciate your understanding and cooperation.<br><br>\nTo contact the hotel, please press the Call button at the top of the page.":"<strong>تنويه مهم</strong><br>\nنقوم حالياً بأعمال تطوير نظام الهواتف الداخلية في الفندق، وقد تكون خدمة الهواتف غير متاحة بشكل مؤقت في بعض المناطق.<br><br>\nنعتذر لكم عن أي إزعاج، ونشكركم على تفهمكم وتعاونكم.<br><br>\nللتواصل مع الفندق، يرجى الضغط على زر الاتصال الموجود في أعلى الصفحة.";document.getElementById('note').textContent=en?'Your browser may request microphone permission when the call starts.':'قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.';document.querySelectorAll('[data-ar]').forEach(x=>x.textContent=x.dataset[en?'en':'ar']);};
 </script></body></html>
