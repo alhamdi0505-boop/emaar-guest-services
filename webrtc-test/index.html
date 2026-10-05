@@ -1,9 +1,24 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#F7F3EC"><title>EMAAR WebRTC Test</title>
 <style>
-:root{--cream:#F7F3EC;--gold:#B08D57;--brown:#8A6A43}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--cream);font-family:Tahoma,Arial,sans-serif;color:var(--brown);display:flex;align-items:center;justify-content:center;padding:20px}.box{width:min(520px,100%);text-align:center;border:1px solid var(--gold);border-radius:28px;padding:28px 22px;box-shadow:0 14px 34px rgba(138,106,67,.14)}.logo{width:min(430px,96%);display:block;margin:0 auto 12px;mix-blend-mode:multiply}h1{font-size:24px;margin:8px 0}.sub{line-height:1.8;margin:0 0 20px}.call{display:block;width:100%;border:1px solid var(--gold);border-radius:18px;background:var(--brown);color:var(--cream);padding:18px;font-size:18px;font-weight:bold;cursor:pointer}.note{font-size:11px;line-height:1.7;margin-top:18px}#myBottomBtn{display:none!important}#anonymousWebRTC.main-box{position:fixed!important;inset:50% auto auto 50%!important;transform:translate(-50%,-50%)!important;right:auto!important;bottom:auto!important;border:1px solid var(--gold)!important;border-radius:18px!important;overflow:hidden!important;box-shadow:0 18px 55px rgba(138,106,67,.24)!important;background:var(--cream)!important}
-</style>
-</head><body><main class="box"><img src="../logo.png" class="logo" alt="EMAAR AL DIYAFA HOTELS"><h1>تجربة اتصال WebRTC</h1><p class="sub">الاتصال من داخل صفحة إعمار باستخدام SDK الرسمي.</p><button class="call" id="startCall">☎ بدء الاتصال</button><p class="note">اسمح باستخدام الميكروفون عند الطلب.</p></main><script src="./anonymousWebRTC/webRTC.js"></script><script>document.getElementById('startCall').onclick=function(){new GSWebRTC();};</script></body></html>
+:root{--cream:#F7F3EC;--gold:#B08D57;--brown:#8A6A43}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--cream);font-family:Tahoma,Arial,sans-serif;color:var(--brown);display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:min(520px,100%);text-align:center;border:1px solid var(--gold);border-radius:28px;padding:28px 22px;box-shadow:0 14px 34px rgba(138,106,67,.14)}
+.logo{width:min(430px,96%);display:block;margin:0 auto 12px;mix-blend-mode:multiply}h1{font-size:24px;margin:8px 0}.sub{line-height:1.8;margin:0 0 20px}
+.call{display:block;width:100%;border:1px solid var(--gold);border-radius:18px;background:var(--brown);color:var(--cream);padding:18px;font-size:18px;font-weight:bold;cursor:pointer}
+#anonymousWebRTC{display:none;position:fixed;z-index:99;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(400px,94vw);height:280px;background:var(--cream);border-radius:20px;overflow:hidden;box-shadow:0 18px 55px rgba(138,106,67,.28)}
+iframe{width:100%;height:100%;border:0}.note{font-size:11px;line-height:1.7;margin-top:18px}
+</style></head><body>
+<main class="box"><img src="../logo.png" class="logo" alt="EMAAR AL DIYAFA HOTELS"><h1>تجربة اتصال WebRTC</h1>
+<p class="sub">اتصال مباشر من داخل واجهة إعمار — بدون فتح صفحة Grandstream السوداء.</p>
+<button class="call" id="startCall">☎ بدء الاتصال</button><p class="note">اسمح باستخدام الميكروفون عند الطلب.</p></main>
+<div id="anonymousWebRTC"><iframe id="frameDialog" name="frameDialog" allow="microphone; autoplay" src="./sdk.html"></iframe></div>
+<script>
+document.getElementById('startCall').onclick=function(){
+ const box=document.getElementById('anonymousWebRTC'); box.style.display='block';
+ const f=document.getElementById('frameDialog').contentWindow;
+ if(f && f.startDevice) f.startDevice();
+};
+</script></body></html>
