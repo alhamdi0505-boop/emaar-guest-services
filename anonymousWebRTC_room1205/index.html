@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Room Caller ID Test</title>
+  <style>
+    html,body{margin:0;width:100%;height:100%;background:#f7f3eb;font-family:Arial,sans-serif}
+    .label{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:5;background:#fff;padding:8px 14px;border-radius:20px;box-shadow:0 2px 12px #0002;font-weight:700;color:#5a4632}
+    #anonymousWebRTC{position:fixed;right:0;bottom:0;width:400px;height:280px;border:0;background:transparent;z-index:10}
+    @media(max-width:600px){#anonymousWebRTC{width:100%!important;right:0!important}.label{top:8px}}
+  </style>
+</head>
+<body>
+  <div class="label" id="roomLabel">ROOM TEST</div>
+  <iframe id="anonymousWebRTC" src="./webRTC.html" allow="microphone; autoplay" title="WebRTC test"></iframe>
+  <script>
+    const room=(new URLSearchParams(location.search).get('room')||'1205').replace(/[^0-9A-Za-z_-]/g,'');
+    document.getElementById('roomLabel').textContent='ROOM '+room+' TEST';
+  </script>
+</body>
+</html>
