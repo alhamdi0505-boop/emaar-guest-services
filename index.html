@@ -25,7 +25,10 @@ footer{text-align:center;color:#967d5c;font:12px Georgia;margin:20px}
 <section class="hero"><div class="logo">E</div><div class="brand">EMAAR AL DIYAFA HOTELS</div><div class="since">SINCE 1998</div></section>
 <main class="card">
 <div class="top"><h1 id="title">خدمات النزلاء</h1><button class="lang" id="lang">English</button></div>
-<p class="intro" id="intro">مرحباً بكم في إعمار الضيافة. يمكنكم الاتصال بالفندق مباشرة من المتصفح دون تثبيت أي تطبيق.</p>
+<p class="intro" id="intro"><strong>تنويه مهم</strong><br>
+نقوم حالياً بأعمال تطوير نظام الهواتف الداخلية في الفندق، وقد تكون خدمة الهواتف غير متاحة بشكل مؤقت في بعض المناطق.<br><br>
+نعتذر لكم عن أي إزعاج، ونشكركم على تفهمكم وتعاونكم.<br><br>
+للتواصل مع الفندق، يرجى الضغط على زر الاتصال الموجود في أعلى الصفحة.</p>
 <a class="call" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_1&to_user=service"><span class="ico">☎</span><b data-ar="اتصل الآن" data-en="Call Now">اتصل الآن</b><small data-ar="اتصال مباشر عبر الفندق" data-en="Direct hotel call">اتصال مباشر عبر الفندق</small></a>
 <div class="grid">
 <div class="svc"><span>🛎️</span><b data-ar="الاستقبال" data-en="Reception">الاستقبال</b><small>0</small></div>
@@ -40,5 +43,5 @@ footer{text-align:center;color:#967d5c;font:12px Georgia;margin:20px}
 </main><footer>EMAAR AL DIYAFA HOTELS · MAKKAH</footer>
 <script>
 let en=false;
-document.getElementById('lang').onclick=()=>{en=!en;document.documentElement.dir=en?'ltr':'rtl';document.documentElement.lang=en?'en':'ar';document.getElementById('lang').textContent=en?'العربية':'English';document.getElementById('title').textContent=en?'Guest Services':'خدمات النزلاء';document.getElementById('intro').textContent=en?'Welcome to Emaar Al Diyafa. Call the hotel directly from your browser — no app required.':'مرحباً بكم في إعمار الضيافة. يمكنكم الاتصال بالفندق مباشرة من المتصفح دون تثبيت أي تطبيق.';document.getElementById('note').textContent=en?'Your browser may request microphone permission when the call starts.':'قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.';document.querySelectorAll('[data-ar]').forEach(x=>x.textContent=x.dataset[en?'en':'ar']);};
+document.getElementById('lang').onclick=()=>{en=!en;document.documentElement.dir=en?'ltr':'rtl';document.documentElement.lang=en?'en':'ar';document.getElementById('lang').textContent=en?'العربية':'English';document.getElementById('title').textContent=en?'Guest Services':'خدمات النزلاء';document.getElementById('intro').innerHTML=en?"<strong>IMPORTANT NOTICE</strong><br>\nWe are currently upgrading the hotel telephone system. The telephone service may be temporarily unavailable in certain areas.<br><br>\nWe sincerely apologize for any inconvenience and appreciate your understanding and cooperation.<br><br>\nTo contact the hotel, please press the Call button at the top of the page.":"<strong>تنويه مهم</strong><br>\nنقوم حالياً بأعمال تطوير نظام الهواتف الداخلية في الفندق، وقد تكون خدمة الهواتف غير متاحة بشكل مؤقت في بعض المناطق.<br><br>\nنعتذر لكم عن أي إزعاج، ونشكركم على تفهمكم وتعاونكم.<br><br>\nللتواصل مع الفندق، يرجى الضغط على زر الاتصال الموجود في أعلى الصفحة.";document.getElementById('note').textContent=en?'Your browser may request microphone permission when the call starts.':'قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.';document.querySelectorAll('[data-ar]').forEach(x=>x.textContent=x.dataset[en?'en':'ar']);};
 </script></body></html>
