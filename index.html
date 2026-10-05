@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#a98655">
+<title>EMAAR AL DIYAFA HOTELS | Guest Services</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f6f2eb;color:#28221b}
+.hero{background:linear-gradient(145deg,#b89766,#8c6c43);color:white;text-align:center;padding:32px 18px 55px}
+.logo{width:92px;height:92px;border:3px solid white;border-radius:50%;display:grid;place-items:center;margin:auto;font:700 40px Georgia}
+.brand{font:21px Georgia;margin-top:13px;letter-spacing:1.5px}.since{font-size:10px;letter-spacing:3px}
+.card{max-width:520px;margin:-30px auto 25px;background:white;border-radius:26px;padding:23px 18px;box-shadow:0 12px 35px #4b38241f}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}h1{margin:0;font-size:23px}
+.lang{border:1px solid #d7c6ae;background:white;padding:8px 13px;border-radius:20px;font-weight:bold}
+.intro{color:#776d62;font-size:14px;line-height:1.8;margin:8px 0 20px}
+.call{display:block;width:100%;background:#927047;color:white;border:0;border-radius:18px;padding:19px;text-decoration:none;text-align:center;box-shadow:0 7px 18px #8d704633;margin-bottom:13px}
+.call .ico{font-size:31px;display:block;margin-bottom:6px}.call b{font-size:19px;display:block}.call small{opacity:.9}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.svc{background:#fcfbf8;border:1px solid #eadfce;border-radius:17px;padding:15px 6px;text-align:center}
+.svc span{font-size:25px;display:block}.svc b{font-size:13px;display:block;margin-top:6px}.svc small{color:#8c7d6c}
+.chat{display:block;margin-top:13px;border:1px solid #d8c6aa;border-radius:17px;padding:15px;text-align:center;text-decoration:none;color:#5f4b34;font-weight:bold}
+.note{font-size:11px;color:#8a8177;text-align:center;line-height:1.7;margin-top:15px}
+footer{text-align:center;color:#967d5c;font:12px Georgia;margin:20px}
+</style></head>
+<body>
+<section class="hero"><div class="logo">E</div><div class="brand">EMAAR AL DIYAFA HOTELS</div><div class="since">SINCE 1998</div></section>
+<main class="card">
+<div class="top"><h1 id="title">خدمات النزلاء</h1><button class="lang" id="lang">English</button></div>
+<p class="intro" id="intro">مرحباً بكم في إعمار الضيافة. يمكنكم الاتصال بالفندق مباشرة من المتصفح دون تثبيت أي تطبيق.</p>
+<a class="call" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_1&to_user=service"><span class="ico">☎</span><b data-ar="اتصل الآن" data-en="Call Now">اتصل الآن</b><small data-ar="اتصال مباشر عبر الفندق" data-en="Direct hotel call">اتصال مباشر عبر الفندق</small></a>
+<div class="grid">
+<div class="svc"><span>🛎️</span><b data-ar="الاستقبال" data-en="Reception">الاستقبال</b><small>0</small></div>
+<div class="svc"><span>🤝</span><b data-ar="مساعدة النزلاء" data-en="Guest Assistance">مساعدة النزلاء</b><small>3</small></div>
+<div class="svc"><span>🍽️</span><b data-ar="خدمة الغرف" data-en="Room Service">خدمة الغرف</b><small>5</small></div>
+<div class="svc"><span>🛡️</span><b data-ar="الأمن" data-en="Security">الأمن</b><small>4</small></div>
+<div class="svc"><span>🔧</span><b data-ar="الصيانة" data-en="Maintenance">الصيانة</b><small>7</small></div>
+<div class="svc"><span>🧹</span><b data-ar="الإشراف الداخلي" data-en="Housekeeping">الإشراف الداخلي</b><small>6</small></div>
+</div>
+<a class="chat" href="https://emaargrand.a.gdms.cloud/liveChat/?liveChatAccess=MF80NDgxMDVlMzgzMjY0NTE5ODNhYTdjY2ExZDU4ZWFjNV9lYzc0ZDc4NTE0ZWUmODEwOTQxNTVhM2VlOGE4OTY0ZGE3YmVhYTk2ZjcyYjE="><span>💬</span> <span data-ar="المحادثة المباشرة" data-en="Live Chat">المحادثة المباشرة</span></a>
+<p class="note" id="note">قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.</p>
+</main><footer>EMAAR AL DIYAFA HOTELS · MAKKAH</footer>
+<script>
+let en=false;
+document.getElementById('lang').onclick=()=>{en=!en;document.documentElement.dir=en?'ltr':'rtl';document.documentElement.lang=en?'en':'ar';document.getElementById('lang').textContent=en?'العربية':'English';document.getElementById('title').textContent=en?'Guest Services':'خدمات النزلاء';document.getElementById('intro').textContent=en?'Welcome to Emaar Al Diyafa. Call the hotel directly from your browser — no app required.':'مرحباً بكم في إعمار الضيافة. يمكنكم الاتصال بالفندق مباشرة من المتصفح دون تثبيت أي تطبيق.';document.getElementById('note').textContent=en?'Your browser may request microphone permission when the call starts.':'قد يطلب المتصفح السماح باستخدام الميكروفون عند بدء الاتصال.';document.querySelectorAll('[data-ar]').forEach(x=>x.textContent=x.dataset[en?'en':'ar']);};
+</script></body></html>
