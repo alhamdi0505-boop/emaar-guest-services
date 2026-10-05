@@ -24,14 +24,16 @@ iframe{width:100%;height:100%;border:0}.note{font-size:11px;line-height:1.7;marg
   const parts=await Promise.all(urls.map(u=>fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(u+' '+r.status);return r.text()})));
   let sdkHtml=parts.join('');
   const workerPrefix="var sessionStorage={_d:{},getItem:function(k){return Object.prototype.hasOwnProperty.call(this._d,k)?this._d[k]:null;},setItem:function(k,v){this._d[k]=String(v);},removeItem:function(k){delete this._d[k];},clear:function(){this._d={};}};var localStorage=sessionStorage;\n";
-  const marker="new Blob([shim+atob('";
-  if(sdkHtml.includes(marker)) sdkHtml=sdkHtml.replace(marker,"new Blob(["+JSON.stringify(workerPrefix)+"+atob('");
-  sdkHtml=sdkHtml.replaceAll('./webRTC/images/close.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-  sdkHtml=sdkHtml.replaceAll('./webRTC/images/reload-image.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-  sdkHtml=sdkHtml.replaceAll('./webRTC/images/reload-icon.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-  sdkHtml=sdkHtml.replaceAll('./webRTC/images/calling-icon.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-  sdkHtml=sdkHtml.replaceAll('webRTC/images/call-btn-icon.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-  sdkHtml=sdkHtml.replaceAll('webRTC/images/hangup-icon.png','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
+  /* The generated SDK currently creates its worker as new Blob([atob('...')]).
+     Inject storage directly into that Blob source. This does not depend on the old shim token. */
+  const blobMarker="new Blob([atob('";
+  if(sdkHtml.includes(blobMarker)){
+    sdkHtml=sdkHtml.replace(blobMarker,"new Blob(["+JSON.stringify(workerPrefix)+"+atob('");
+  }else{
+    throw new Error('WebRTC worker marker not found');
+  }
+  const px='data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  sdkHtml=sdkHtml.replaceAll('./webRTC/images/close.png',px).replaceAll('./webRTC/images/reload-image.png',px).replaceAll('./webRTC/images/reload-icon.png',px).replaceAll('./webRTC/images/calling-icon.png',px).replaceAll('webRTC/images/call-btn-icon.png',px).replaceAll('webRTC/images/hangup-icon.png',px);
   frame.srcdoc=sdkHtml;
   frame.onload=()=>{btn.disabled=false;btn.textContent='☎ بدء الاتصال';status.textContent='جاهز للاختبار';};
   btn.onclick=()=>{
@@ -41,6 +43,6 @@ iframe{width:100%;height:100%;border:0}.note{font-size:11px;line-height:1.7;marg
    w.startDevice();
    setTimeout(()=>{try{const b=d&&d.querySelector('.bottom-call-btn');if(b){status.textContent='جاري الاتصال…';b.click();}else status.textContent='زر الاتصال داخل SDK غير جاهز.';}catch(e){status.textContent='تعذر بدء الاتصال.';}},1800);
   };
- }catch(e){status.textContent='تعذر تحميل SDK: '+e.message;btn.textContent='تعذر التجهيز';}
+ }catch(e){status.textContent='تعذر تحميل SDK: '+e.message;btn.textContent='تعذر التجهيز';console.error(e);}
 })();
 </script></body></html>
