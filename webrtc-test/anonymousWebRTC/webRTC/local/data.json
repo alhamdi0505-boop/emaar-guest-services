@@ -1,0 +1,30 @@
+{
+    "zh": {
+        "L1": "麦克风",
+        "L2": "测试",
+        "L3": "扬声器",
+        "L4": "呼叫",
+        "L5": "您已禁止麦克风权限",
+        "L6": "请先点击浏览器上的设置图标并在设置项中选择允许麦克风选项，然后点击“重新加载”按钮",
+        "L7": "重新加载",
+        "L8": "知道了",
+        "L9": "呼叫中…",
+        "L10": "通话结束",
+        "L11": "停止",
+        "L12": "呼叫失败"
+    },
+    "en": {
+        "L1": "Microphone",
+        "L2": "Test",
+        "L3": "Speaker",
+        "L4": "Call",
+        "L5": "You have disabled access to the microphone",
+        "L6": "Please click the 'Setting' icon in your browser. Select 'Allow microphone' in the drop-down list and then click 'Reload'.",
+        "L7": "Reload",
+        "L8": "I Known",
+        "L9": "Calling…",
+        "L10": "Ended",
+        "L11": "Stop",
+        "L12": "Call Failed"
+    }
+}
