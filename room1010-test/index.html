@@ -36,7 +36,12 @@ document.querySelectorAll('[data-direct-service]').forEach(el=>{
   el.onclick=(ev)=>{ev.preventDefault();startServiceCall(el.dataset.directService)};
 });
 document.getElementById('callClose').onclick=()=>{layer.style.display='none';layer.setAttribute('aria-hidden','true');frame.src='about:blank'};
-</script><div id="webrtcDiag" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:99999;background:#111;color:#0f0;border:1px solid #555;border-radius:10px;padding:10px;font:12px/1.5 monospace;max-height:32vh;overflow:auto;display:none;direction:ltr;text-align:left"></div>
+</script><div id="micSelfTest" style="position:fixed;right:10px;bottom:150px;z-index:99999;background:#111;color:#fff;border:1px solid #555;border-radius:12px;padding:10px;direction:rtl;text-align:right;font:14px/1.5 sans-serif">
+  <button id="micSelfTestBtn" style="border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer">اختبار المايك 5 ثواني</button>
+  <div id="micSelfTestStatus" style="margin-top:8px;max-width:320px"></div>
+  <audio id="micSelfTestPlayback" controls style="display:none;margin-top:8px;max-width:320px"></audio>
+</div>
+<div id="webrtcDiag" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:99999;background:#111;color:#0f0;border:1px solid #555;border-radius:10px;padding:10px;font:12px/1.5 monospace;max-height:32vh;overflow:auto;display:none;direction:ltr;text-align:left"></div>
 <script>
 window.addEventListener('message',function(ev){
   if(ev.data&&ev.data.type==='webrtc-share-audio'){
@@ -61,5 +66,51 @@ window.addEventListener('message',function(ev){
     'outbound: '+JSON.stringify(d.outboundAudio||null)+'\n'+
     (d.error?('error: '+d.error+'\n'):'');
 });
+</script>
+
+<script>
+(function(){
+  const btn=document.getElementById('micSelfTestBtn');
+  const status=document.getElementById('micSelfTestStatus');
+  const playback=document.getElementById('micSelfTestPlayback');
+  if(!btn) return;
+  btn.addEventListener('click', async function(){
+    btn.disabled=true;
+    playback.style.display='none';
+    playback.removeAttribute('src');
+    status.textContent='جاري فتح المايك...';
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({
+        audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},
+        video:false
+      });
+      const track=stream.getAudioTracks()[0];
+      const settings=track?track.getSettings():{};
+      status.textContent='تسجيل 5 ثواني... تكلم الآن. المايك: '+(track&&track.label?track.label:'غير معروف');
+      const chunks=[];
+      let mime='';
+      const candidates=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];
+      for(const x of candidates){ if(window.MediaRecorder&&MediaRecorder.isTypeSupported(x)){mime=x;break;} }
+      const rec=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
+      rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+      rec.onstop=()=>{
+        try{
+          const blob=new Blob(chunks,{type:rec.mimeType||'audio/webm'});
+          playback.src=URL.createObjectURL(blob);
+          playback.style.display='block';
+          status.textContent='تم التسجيل. اضغط تشغيل واسمع صوتك. الحجم: '+blob.size+' bytes';
+        }finally{
+          stream.getTracks().forEach(t=>t.stop());
+          btn.disabled=false;
+        }
+      };
+      rec.start();
+      setTimeout(()=>{ if(rec.state!=='inactive') rec.stop(); },5000);
+    }catch(err){
+      status.textContent='فشل اختبار المايك: '+(err&&err.message?err.message:err);
+      btn.disabled=false;
+    }
+  });
+})();
 </script>
 </body></html>
