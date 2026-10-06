@@ -18,7 +18,30 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
 
     const localSdp=pc&&pc.localDescription?pc.localDescription.sdp||"":"";
     const remoteSdp=pc&&pc.remoteDescription?pc.remoteDescription.sdp||"":"";
-    const dir=sdp=>{const m=sdp.match(/m=audio[\\s\\S]*?(?:a=(sendrecv|sendonly|recvonly|inactive))/);return m?m[1]:"unknown"};
+    const audioSection=sdp=>{
+      const m=sdp.match(/m=audio[^\\r\\n]*(?:\\r?\\n(?!m=)[^\\r\\n]*)*/);
+      return m?m[0]:"";
+    };
+    const dir=sdp=>{
+      const sec=audioSection(sdp);
+      const m=sec.match(/a=(sendrecv|sendonly|recvonly|inactive)/);
+      return m?m[1]:"unknown";
+    };
+    let senderMedia=null;
+    if(pc&&pc.getStats){
+      const stats=await pc.getStats();
+      stats.forEach(r=>{
+        if((r.type==="media-source"||r.type==="track")&&(r.kind==="audio"||r.mediaType==="audio")){
+          senderMedia={
+            type:r.type,
+            audioLevel:r.audioLevel,
+            totalAudioEnergy:r.totalAudioEnergy,
+            totalSamplesDuration:r.totalSamplesDuration,
+            trackIdentifier:r.trackIdentifier
+          };
+        }
+      });
+    }
     const diag={
       stage,
       peerAccount:s&&s.peerAccount,
@@ -28,6 +51,7 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
       audioSender:audioSender&&audioSender.track?{enabled:audioSender.track.enabled,muted:audioSender.track.muted,readyState:audioSender.track.readyState,label:audioSender.track.label}:null,
       localAudioDirection:dir(localSdp),
       remoteAudioDirection:dir(remoteSdp),
+      senderMedia,
       outboundAudio:outbound,
       transceivers:trans
     };
