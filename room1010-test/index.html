@@ -18,7 +18,7 @@ function startServiceCall(service){
   }
   // Keep Grandstream's official WebRTC media path untouched.
   // Carry the room only as the called-user/DID value for a PBX-side caller-ID test.
-  window.location.href='https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_12&to_user='+encodeURIComponent('0'+ROOM);
+  window.location.href='https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_12&to_user='+encodeURIComponent(ROOM);
 }
 document.querySelectorAll('[data-direct-service]').forEach(el=>{
   el.onclick=(ev)=>{ev.preventDefault();startServiceCall(el.dataset.directService)};
