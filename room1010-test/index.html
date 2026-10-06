@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F7F3EC">
+<title>غرفة 1010 | اختبار خدمات النزلاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EC;--gold:#B08D57;--brown:#8A6A43;--ink:#4A3826;--soft:#EFE6D6}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);font-family:Tajawal,Tahoma,Arial,sans-serif}
+.wrap{max-width:620px;margin:auto;padding:18px 14px 28px}.head{text-align:center;margin-bottom:12px}.head img{width:min(460px,82vw);height:auto}.room{display:inline-block;margin-top:8px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--brown);font-weight:700}.card{border:1px solid var(--gold);border-radius:26px;padding:18px;background:var(--cream);box-shadow:0 12px 30px rgba(138,106,67,.12)}
+h1{margin:0 0 6px;text-align:center;color:var(--brown);font-size:25px}.sub{text-align:center;margin:0 0 16px;font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.svc{min-height:82px;border:1px solid var(--gold);border-radius:18px;background:transparent;color:var(--ink);font:700 15px Tajawal,Arial;cursor:pointer;padding:10px}.svc:hover{background:var(--soft)}.svc.primary{grid-column:1/-1;background:var(--brown);color:#fff;font-size:17px}.note{font-size:12px;text-align:center;margin:14px 0 0;color:var(--brown)}
+#callLayer{display:none;position:fixed;inset:0;background:rgba(25,20,15,.58);z-index:99;align-items:center;justify-content:center;padding:12px}
+#callBox{width:min(560px,100%);height:330px;background:#fff;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 20px 60px #0005}
+#close{position:absolute;top:8px;left:8px;z-index:3;border:0;border-radius:50%;width:36px;height:36px;background:#fff;color:#333;font-size:24px;cursor:pointer;box-shadow:0 2px 8px #0002}
+#frameDialog{width:100%;height:100%;border:0}#anonymousWebRTC{width:100%;height:100%}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.svc{min-height:78px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <img src="../logo.png" alt="EMAAR AL DIYAFA HOTELS">
+    <div class="room">ROOM 1010 · غرفة 1010</div>
+  </div>
+  <div class="card">
+    <h1>خدمات النزلاء</h1>
+    <p class="sub">اختر الخدمة المطلوبة</p>
+    <div class="grid">
+      <button class="svc primary" data-service="hotel">☎ الاتصال بالفندق</button>
+      <button class="svc" data-service="reception">الاستقبال</button>
+      <button class="svc" data-service="management">الإدارة</button>
+      <button class="svc" data-service="assistance">مساعدة النزلاء</button>
+      <button class="svc" data-service="roomservice">خدمة الغرف</button>
+      <button class="svc" data-service="security">الأمن</button>
+      <button class="svc" data-service="maintenance">الصيانة</button>
+      <button class="svc" data-service="housekeeping">الإشراف الداخلي</button>
+    </div>
+    <p class="note">نسخة اختبار للغرفة 1010 — رقم الغرفة يُرسل ديناميكيًا مع مكالمة Click2Call.</p>
+  </div>
+</div>
+<div id="callLayer">
+  <div id="callBox">
+    <button id="close" type="button">×</button>
+    <div id="anonymousWebRTC" class="main-box">
+      <iframe id="frameDialog" name="frameDialog" allow="microphone; autoplay" scrolling="no" title="WebRTC call"></iframe>
+    </div>
+  </div>
+</div>
+<script>
+const ROOM='1010';
+const layer=document.getElementById('callLayer');
+const frame=document.getElementById('frameDialog');
+function openCall(service){
+  // Current SDK is tied to the single Integrated Customer Service Click2Call queue.
+  // We pass room + requested service so the UI is ready for per-service routing tests next.
+  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service);
+  layer.style.display='flex';
+  frame.onload=()=>{
+    const start=()=>{
+      try{
+        if(frame.contentWindow && typeof frame.contentWindow.startDevice==='function') frame.contentWindow.startDevice();
+        else setTimeout(start,200);
+      }catch(e){console.error(e)}
+    }; start();
+  };
+}
+document.querySelectorAll('[data-service]').forEach(b=>b.onclick=()=>openCall(b.dataset.service));
+document.getElementById('close').onclick=()=>{layer.style.display='none';frame.src='about:blank'};
+</script>
+</body>
+</html>
