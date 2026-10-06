@@ -16,7 +16,7 @@ function startServiceCall(service){
     alert(document.documentElement.lang==='ar'?'اختبار الصوت حالياً على زر الاستقبال فقط':'Audio test is currently on Reception only');
     return;
   }
-  window.location.href='https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_2&to_user=service';
+  window.location.href='https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_11&to_user=service';
 }
 document.querySelectorAll('[data-direct-service]').forEach(el=>{
   el.onclick=(ev)=>{ev.preventDefault();startServiceCall(el.dataset.directService)};
