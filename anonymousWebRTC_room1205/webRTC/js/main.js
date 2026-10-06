@@ -6,12 +6,30 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
     const audioSender=senders.find(x=>x.track&&x.track.kind==="audio");
     const trans=pc&&pc.getTransceivers?pc.getTransceivers().map(x=>({mid:x.mid,direction:x.direction,currentDirection:x.currentDirection,senderTrack:x.sender&&x.sender.track?{kind:x.sender.track.kind,enabled:x.sender.track.enabled,muted:x.sender.track.muted,readyState:x.sender.track.readyState,label:x.sender.track.label}:null,receiverTrack:x.receiver&&x.receiver.track?{kind:x.receiver.track.kind,muted:x.receiver.track.muted,readyState:x.receiver.track.readyState}:null})):[];
 
-    let outbound=null;
+    let outbound=null,remoteInbound=null,candidatePair=null;
     if(pc&&pc.getStats){
       const stats=await pc.getStats();
       stats.forEach(r=>{
         if(r.type==="outbound-rtp"&&r.kind==="audio"&&!r.isRemote){
           outbound={packetsSent:r.packetsSent||0,bytesSent:r.bytesSent||0,headerBytesSent:r.headerBytesSent||0};
+        }
+        if(r.type==="remote-inbound-rtp"&&(r.kind==="audio"||r.mediaType==="audio")){
+          remoteInbound={
+            packetsLost:r.packetsLost,
+            fractionLost:r.fractionLost,
+            jitter:r.jitter,
+            roundTripTime:r.roundTripTime,
+            totalRoundTripTime:r.totalRoundTripTime,
+            reportsReceived:r.reportsReceived
+          };
+        }
+        if(r.type==="candidate-pair"&&r.state==="succeeded"&&r.nominated){
+          candidatePair={
+            currentRoundTripTime:r.currentRoundTripTime,
+            availableOutgoingBitrate:r.availableOutgoingBitrate,
+            bytesSent:r.bytesSent,
+            bytesReceived:r.bytesReceived
+          };
         }
       });
     }
@@ -59,7 +77,9 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
       remoteAudioDirection:dir(remoteSdp),
       senderMedia,
       outboundAudio:Object.assign({},outbound||{},{
-        mediaSource:senderMedia||null
+        mediaSource:senderMedia||null,
+        remoteInbound:remoteInbound||null,
+        candidatePair:candidatePair||null
       }),
       transceivers:trans
     };
