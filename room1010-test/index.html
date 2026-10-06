@@ -36,4 +36,24 @@ document.querySelectorAll('[data-direct-service]').forEach(el=>{
   el.onclick=(ev)=>{ev.preventDefault();startServiceCall(el.dataset.directService)};
 });
 document.getElementById('callClose').onclick=()=>{layer.style.display='none';layer.setAttribute('aria-hidden','true');frame.src='about:blank'};
-</script></body></html>
+</script><div id="webrtcDiag" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:99999;background:#111;color:#0f0;border:1px solid #555;border-radius:10px;padding:10px;font:12px/1.5 monospace;max-height:32vh;overflow:auto;display:none;direction:ltr;text-align:left"></div>
+<script>
+window.addEventListener('message',function(ev){
+  if(!ev.data||ev.data.type!=='webrtc-audio-diag') return;
+  const d=ev.data.diag||{};
+  const box=document.getElementById('webrtcDiag');
+  box.style.display='block';
+  box.textContent=
+    'AUDIO DIAG\n'+
+    'stage: '+(d.stage||'')+'\n'+
+    'peer: '+(d.peerAccount||'')+'\n'+
+    'connection: '+(d.connectionState||'')+'\n'+
+    'ICE: '+(d.iceConnectionState||'')+'\n'+
+    'local audio: '+(d.localAudioDirection||'')+'\n'+
+    'remote audio: '+(d.remoteAudioDirection||'')+'\n'+
+    'sender: '+JSON.stringify(d.audioSender||null)+'\n'+
+    'outbound: '+JSON.stringify(d.outboundAudio||null)+'\n'+
+    (d.error?('error: '+d.error+'\n'):'');
+});
+</script>
+</body></html>
