@@ -4,42 +4,11 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>click2talk</title>
-    <link rel="stylesheet" type="text/css" href="./webRTC/css/common.css?v=room1205sdkdiag3">
-    <link rel="stylesheet" type="text/css" href="./webRTC/css/main.css?v=room1205sdkdiag3">
+    <link rel="stylesheet" type="text/css" href="./webRTC/css/common.css?v=room1205clean1">
+    <link rel="stylesheet" type="text/css" href="./webRTC/css/main.css?v=room1205clean1">
 </head>
 <body class="fx-embedded">
-<div id="diagPanel" style="position:fixed;left:6px;right:6px;top:6px;z-index:99999;background:#111;color:#0f0;font:11px/1.35 monospace;padding:6px;max-height:120px;overflow:auto;opacity:.92;white-space:pre-wrap">DIAG: loaded</div>
-<script>
-(function(){
-  const p=()=>document.getElementById('diagPanel');
-  const out=(lvl,args)=>{
-    try{
-      const line='['+lvl+'] '+Array.from(args).map(v=>{
-        try{return typeof v==='string'?v:JSON.stringify(v);}catch(e){return String(v);}
-      }).join(' ');
-      const el=p(); if(el){el.textContent += '\n'+line; el.scrollTop=el.scrollHeight;}
-    }catch(e){}
-  };
-  ['log','warn','error'].forEach(k=>{
-    const orig=console[k].bind(console);
-    console[k]=function(){out(k,arguments);orig(...arguments);}
-  });
-  window.addEventListener('error',e=>out('window.error',[e.message,e.filename,e.lineno]));
-  window.addEventListener('unhandledrejection',e=>out('promise.reject',[String(e.reason)]));
-  const NativeWS=window.WebSocket;
-  window.WebSocket=function(url,protocols){
-    out('WS:new',[url]);
-    const ws=protocols===undefined?new NativeWS(url):new NativeWS(url,protocols);
-    ws.addEventListener('open',()=>out('WS:open',[url]));
-    ws.addEventListener('error',()=>out('WS:error',[url]));
-    ws.addEventListener('close',e=>out('WS:close',[e.code,e.reason]));
-    return ws;
-  };
-  window.WebSocket.prototype=NativeWS.prototype;
-  Object.setPrototypeOf(window.WebSocket,NativeWS);
-})();
-</script>
-    <div id="main" style="display: none">
+<div id="main" style="display: none">
         <div class="main-title">
             <img src="./webRTC/images/close.png" alt="" class="btn-close">
         </div>
@@ -149,9 +118,9 @@
     </div>
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="./jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="./debug.js?v=room1205sdkdiag3"></script>
-    <script type="text/javascript" src="./gsRTC.min.js?v=room1205sdkdiag3"></script>
-    <script type="text/javascript" src="./webRTC/js/language.js?v=room1205sdkdiag3"></script>
-    <script type="text/javascript" src="./webRTC/js/main.js?v=room1205sdkdiag3"></script>
+    <script type="text/javascript" src="./debug.js?v=room1205clean1"></script>
+    <script type="text/javascript" src="./gsRTC.min.js?v=room1205clean1"></script>
+    <script type="text/javascript" src="./webRTC/js/language.js?v=room1205clean1"></script>
+    <script type="text/javascript" src="./webRTC/js/main.js?v=room1205clean1"></script>
 </body>
 </html>
