@@ -19,7 +19,7 @@ function __scheduleServiceDtmf(delay,reason){
   if(__serviceDtmfSent||__serviceDtmfTimer) return;
   __serviceDtmfTimer=setTimeout(()=>{__serviceDtmfTimer=null;__sendServiceDtmf(reason)},delay);
 }
-function P(e){console.log("onCallEnd "+JSON.stringify(e)),__serviceDtmfSent=false,__serviceDtmfTimer&&clearTimeout(__serviceDtmfTimer),__serviceDtmfTimer=null,F()}function _(e){console.log("onMediaStreamChange "+JSON.stringify(e));let t=e.type,i=e.stream,n=e.isLocal;"audio"===t&&(n?(console.log("合进本地音频"),i||console.log("删除本地音频")):i?(__scheduleServiceDtmf(1200,"remote-audio"),console.log("合进远方音频"),function(e,t){if(!e)return void console.info("attachMediaStream element is null, return");console.info("attachMediaStream, element.id:"+e.id);if(!t)return void console.info("attachMediaStream stream is null, return");console.info("attachMediaStream, stream id:"+t.id);e.srcObject=t,e&&"AUDIO"===e.tagName&&window.usedSpeakerDeviceId&&console.log("chrome attachMediaStream setSinkId")}(d[0],i)):console.log("删除远方音频"))}async function __audioDiag(stage){
+function P(e){console.log("onCallEnd "+JSON.stringify(e)),__serviceDtmfSent=false,__serviceDtmfTimer&&clearTimeout(__serviceDtmfTimer),__serviceDtmfTimer=null,F()}function _(e){console.log("onMediaStreamChange "+JSON.stringify(e));let t=e.type,i=e.stream,n=e.isLocal;"audio"===t&&(n?(console.log("合进本地音频"),i||console.log("删除本地音频")):i?(console.log("合进远方音频"),function(e,t){if(!e)return void console.info("attachMediaStream element is null, return");console.info("attachMediaStream, element.id:"+e.id);if(!t)return void console.info("attachMediaStream stream is null, return");console.info("attachMediaStream, stream id:"+t.id);e.srcObject=t,e&&"AUDIO"===e.tagName&&window.usedSpeakerDeviceId&&console.log("chrome attachMediaStream setSinkId")}(d[0],i)):console.log("删除远方音频"))}async function __audioDiag(stage){
   try{
     const s=(window.gsRTC&&window.gsRTC.webrtcSessions&&window.gsRTC.webrtcSessions[0])||null;
     const pc=s&&s.pc;
@@ -118,7 +118,7 @@ function B(e){
   console.log("onCallAnswered "+JSON.stringify(e));
   __serviceDtmfSent=false;
   __serviceDtmfTimer=null;
-  __scheduleServiceDtmf(2400,"answered-fallback");
+  __scheduleServiceDtmf(4500,"post-queue-timeout");
   setTimeout(()=>__audioDiag("answered+1s"),1000);
   setTimeout(()=>__audioDiag("answered+5s"),5000);
 }
