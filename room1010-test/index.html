@@ -21,15 +21,15 @@ const SERVICE_DTMF={
   maintenance:'7'
 };
 function startServiceCall(service){
-  const destination=SERVICE_DESTINATIONS[service]||'';
-  if(!destination){
-    alert((document.documentElement.lang==='ar'?'لم يتم إدخال رقم تحويلة هذه الخدمة بعد: ':'No destination configured yet for: ')+service);
+  const dtmf=SERVICE_DTMF[service]||'';
+  if(!dtmf){
+    alert((document.documentElement.lang==='ar'?'لم يتم تعريف مسار هذه الخدمة بعد: ':'No route configured yet for: ')+service);
     return;
   }
   layer.style.display='flex';layer.setAttribute('aria-hidden','false');
   const start=()=>{try{if(frame.contentWindow&&typeof frame.contentWindow.startDevice==='function')frame.contentWindow.startDevice();else setTimeout(start,200)}catch(e){setTimeout(start,300)}};
   frame.onload=()=>start();
-  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service)+'&destination='+encodeURIComponent(destination)+'&v=room1010dispatcher1';
+  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service)+'&dtmf='+encodeURIComponent(dtmf)+'&v=room1010dispatcher2';
   setTimeout(start,400);
 }
 document.querySelectorAll('[data-direct-service]').forEach(el=>{
