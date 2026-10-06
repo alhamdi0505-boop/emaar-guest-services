@@ -39,6 +39,12 @@ document.getElementById('callClose').onclick=()=>{layer.style.display='none';lay
 </script><div id="webrtcDiag" style="position:fixed;left:10px;right:10px;bottom:10px;z-index:99999;background:#111;color:#0f0;border:1px solid #555;border-radius:10px;padding:10px;font:12px/1.5 monospace;max-height:32vh;overflow:auto;display:none;direction:ltr;text-align:left"></div>
 <script>
 window.addEventListener('message',function(ev){
+  if(ev.data&&ev.data.type==='webrtc-mic-refresh'){
+    const box=document.getElementById('webrtcDiag');
+    box.style.display='block';
+    box.textContent='MIC REFRESH: '+(ev.data.ok?'OK ':'FAILED ')+(ev.data.ok?JSON.stringify(ev.data.track):ev.data.error);
+    return;
+  }
   if(!ev.data||ev.data.type!=='webrtc-audio-diag') return;
   const d=ev.data.diag||{};
   const box=document.getElementById('webrtcDiag');
