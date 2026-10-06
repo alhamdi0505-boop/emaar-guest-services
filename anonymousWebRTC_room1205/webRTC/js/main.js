@@ -7,12 +7,30 @@ function __sendServiceDtmf(reason){
   const s=(window.gsRTC&&window.gsRTC.webrtcSessions&&window.gsRTC.webrtcSessions[0])||null;
   const peer=s&&s.peerAccount?s.peerAccount:webrtcSettings.phone_number;
   try{
-    window.gsRTC.sipSendDtmf({peerAccount:peer,digit:digit});
+    let method="SIP-INFO";
+    if(window.gsRTC&&typeof window.gsRTC.sipSendInfo==="function"){
+      window.gsRTC.sipSendInfo({
+        peerAccount:peer,
+        contentType:"application/dtmf-relay",
+        content:"Signal="+digit+"\r\nDuration=160"
+      });
+    }else{
+      method="RTP-DTMF";
+      window.gsRTC.sipSendDtmf({peerAccount:peer,digit:digit});
+    }
     __serviceDtmfSent=true;
-    console.warn("SERVICE_DTMF_SENT",{digit,peer,reason});
-    try{window.parent.postMessage({type:"webrtc-service-dtmf",digit,peer,reason},"*")}catch(_){}
+    console.warn("SERVICE_DTMF_SENT",{digit,peer,reason,method});
+    try{window.parent.postMessage({type:"webrtc-service-dtmf",digit,peer,reason,method},"*")}catch(_){}
   }catch(err){
     console.error("SERVICE_DTMF_FAIL",err);
+    try{
+      window.gsRTC.sipSendDtmf({peerAccount:peer,digit:digit});
+      __serviceDtmfSent=true;
+      console.warn("SERVICE_DTMF_SENT_FALLBACK",{digit,peer,reason,method:"RTP-DTMF"});
+      try{window.parent.postMessage({type:"webrtc-service-dtmf",digit,peer,reason,method:"RTP-DTMF-fallback"},"*")}catch(_){}
+    }catch(err2){
+      console.error("SERVICE_DTMF_FALLBACK_FAIL",err2);
+    }
   }
 }
 function __scheduleServiceDtmf(delay,reason){
