@@ -16,7 +16,12 @@ function startServiceCall(service){
     alert(document.documentElement.lang==='ar'?'اختبار الصوت حالياً على زر الاستقبال فقط':'Audio test is currently on Reception only');
     return;
   }
-  window.location.href='https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_11&to_user=service';
+  layer.style.display='flex';layer.setAttribute('aria-hidden','false');
+  frame.style.display='block';
+  const start=()=>{try{if(frame.contentWindow&&typeof frame.contentWindow.startDevice==='function')frame.contentWindow.startDevice();else setTimeout(start,200)}catch(e){setTimeout(start,300)}};
+  frame.onload=()=>start();
+  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&v=room1010cidtransportfix1';
+  setTimeout(start,400);
 }
 document.querySelectorAll('[data-direct-service]').forEach(el=>{
   el.onclick=(ev)=>{ev.preventDefault();startServiceCall(el.dataset.directService)};
