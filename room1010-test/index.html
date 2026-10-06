@@ -12,7 +12,7 @@
 :root{--cream:#F7F3EC;--gold:#B08D57;--brown:#8A6A43;--ink:#4A3826;--soft:#EFE6D6}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);font-family:Tajawal,Tahoma,Arial,sans-serif}
 .wrap{max-width:620px;margin:auto;padding:18px 14px 28px}.head{text-align:center;margin-bottom:12px}.head img{width:min(460px,82vw);height:auto}.room{display:inline-block;margin-top:8px;padding:6px 14px;border:1px solid var(--gold);border-radius:999px;color:var(--brown);font-weight:700}.card{border:1px solid var(--gold);border-radius:26px;padding:18px;background:var(--cream);box-shadow:0 12px 30px rgba(138,106,67,.12)}
-h1{margin:0 0 6px;text-align:center;color:var(--brown);font-size:25px}.sub{text-align:center;margin:0 0 16px;font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.svc{min-height:82px;border:1px solid var(--gold);border-radius:18px;background:transparent;color:var(--ink);font:700 15px Tajawal,Arial;cursor:pointer;padding:10px}.svc:hover{background:var(--soft)}.svc.primary{grid-column:1/-1;background:var(--brown);color:#fff;font-size:17px}.note{font-size:12px;text-align:center;margin:14px 0 0;color:var(--brown)}
+h1{margin:0 0 6px;text-align:center;color:var(--brown);font-size:25px}.sub{text-align:center;margin:0 0 16px;font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.svc{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:82px;border:1px solid var(--gold);border-radius:18px;background:transparent;color:var(--ink);font:700 15px Tajawal,Arial;cursor:pointer;padding:10px}.svc:hover{background:var(--soft)}.svc.primary{grid-column:1/-1;background:var(--brown);color:#fff;font-size:17px}.note{font-size:12px;text-align:center;margin:14px 0 0;color:var(--brown)}
 #callLayer{display:none;position:fixed;inset:0;background:rgba(25,20,15,.58);z-index:99;align-items:center;justify-content:center;padding:12px}
 #callBox{width:min(560px,100%);height:330px;background:#fff;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 20px 60px #0005}
 #close{position:absolute;top:8px;left:8px;z-index:3;border:0;border-radius:50%;width:36px;height:36px;background:#fff;color:#333;font-size:24px;cursor:pointer;box-shadow:0 2px 8px #0002}
@@ -30,14 +30,14 @@ h1{margin:0 0 6px;text-align:center;color:var(--brown);font-size:25px}.sub{text-
     <h1>خدمات النزلاء</h1>
     <p class="sub">اختر الخدمة المطلوبة</p>
     <div class="grid">
-      <button class="svc primary" data-service="hotel">☎ الاتصال بالفندق</button>
+      <a class="svc primary" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_1&to_user=service">☎ الاتصال بالفندق</a>
       <button class="svc" data-service="reception">الاستقبال</button>
-      <button class="svc" data-service="management">الإدارة</button>
-      <button class="svc" data-service="assistance">مساعدة النزلاء</button>
-      <button class="svc" data-service="roomservice">خدمة الغرف</button>
-      <button class="svc" data-service="security">الأمن</button>
-      <button class="svc" data-service="maintenance">الصيانة</button>
-      <button class="svc" data-service="housekeeping">الإشراف الداخلي</button>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_8&to_user=service">الإدارة</a>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_3&to_user=service">مساعدة النزلاء</a>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_4&to_user=service">خدمة الغرف</a>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_5&to_user=service">الأمن</a>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_6&to_user=service">الصيانة</a>
+      <a class="svc" href="https://emaargrand.a.gdms.cloud/click2call?from_user=webrtc_trunk_7&to_user=service">الإشراف الداخلي</a>
     </div>
     <p class="note">نسخة اختبار للغرفة 1010 — رقم الغرفة يُرسل ديناميكيًا مع مكالمة Click2Call.</p>
   </div>
@@ -69,7 +69,7 @@ function openCall(service){
   frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service)+'&v=2';
   setTimeout(start,400);
 }
-document.querySelectorAll('[data-service]').forEach(b=>b.onclick=()=>openCall(b.dataset.service));
+document.querySelectorAll('[data-service="reception"]').forEach(b=>b.onclick=()=>openCall('reception'));
 document.getElementById('close').onclick=()=>{layer.style.display='none';frame.src='about:blank'};
 </script>
 </body>
