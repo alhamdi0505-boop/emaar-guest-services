@@ -41,34 +41,29 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
     return diag;
   }
 }
-async function __refreshMicTrack(){
+function B(e){
+  console.log("onCallAnswered "+JSON.stringify(e));
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({
-      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},
-      video:false
-    });
-    const track=stream.getAudioTracks()[0];
-    if(!track) throw new Error("No audio track returned by getUserMedia");
-    const s=(window.gsRTC&&window.gsRTC.webrtcSessions&&window.gsRTC.webrtcSessions[0])||null;
-    const pc=s&&s.pc;
-    if(!pc||!pc.getSenders) throw new Error("PeerConnection sender not available");
-    const sender=pc.getSenders().find(x=>x.track&&x.track.kind==="audio");
-    if(!sender) throw new Error("Audio sender not found");
-    await sender.replaceTrack(track);
-    try{sender.track.enabled=true}catch(_){}
-    window.__testMicStream=stream;
-    console.warn("MIC_REFRESH_OK",{label:track.label,enabled:track.enabled,muted:track.muted,readyState:track.readyState});
-    try{window.parent.postMessage({type:"webrtc-mic-refresh",ok:true,track:{label:track.label,enabled:track.enabled,muted:track.muted,readyState:track.readyState}},"*")}catch(_){}
-    return true;
+    const peer=(e&&e.to)||((window.gsRTC&&window.gsRTC.webrtcSessions&&window.gsRTC.webrtcSessions[0]&&window.gsRTC.webrtcSessions[0].peerAccount)||"");
+    if(window.gsRTC&&typeof window.gsRTC.shareAudio==="function"&&peer){
+      window.gsRTC.shareAudio({
+        peerAccount:peer,
+        constraints:{audio:true,video:false},
+        callback:function(r){
+          console.warn("SDK_SHARE_AUDIO",r);
+          try{window.parent.postMessage({type:"webrtc-share-audio",result:r},"*")}catch(_){}
+          setTimeout(()=>__audioDiag("shareAudio+1s"),1000);
+          setTimeout(()=>__audioDiag("shareAudio+5s"),5000);
+        }
+      });
+    }else{
+      console.warn("SDK_SHARE_AUDIO unavailable");
+      setTimeout(()=>__audioDiag("answered+1s"),1000);
+      setTimeout(()=>__audioDiag("answered+5s"),5000);
+    }
   }catch(err){
-    console.error("MIC_REFRESH_FAIL",err);
-    try{window.parent.postMessage({type:"webrtc-mic-refresh",ok:false,error:String(err&&err.message||err)},"*")}catch(_){}
-    return false;
+    console.error("SDK_SHARE_AUDIO_FAIL",err);
+    setTimeout(()=>__audioDiag("shareAudio-error"),500);
   }
 }
-async function B(e){
-  console.log("onCallAnswered "+JSON.stringify(e));
-  await __refreshMicTrack();
-  setTimeout(()=>__audioDiag("answered+1s"),1000);
-  setTimeout(()=>__audioDiag("answered+5s"),5000);
-}function G(e){console.log("onCallRemoteRinging "+JSON.stringify(e))}function H(e){console.log("onRecvInfo "+JSON.stringify(e))}function W(e){console.log("onError "+JSON.stringify(e))}f.click((function(){n.hasClass("col-right-active")&&(o.hide(),n.removeClass("col-right-active")),c.hasClass("col-right-active")&&(l.hide(),c.removeClass("col-right-active"))})),$(".btn-close").click((function(){D(),p.hide()})),$(".reload-close-btn").click((function(){p.hide()})),$(".known-btn").click((function(){p.hide()})),$(".reload-btn").click((function(){location.reload()})),$.ajax({type:"GET",url:"./webrtc_settings.json",dataType:"json",async:!1,success:function(e){webrtcSettings=e,txtPhoneNumber=e.phone_number}});var q=function(){!window.gsRTC&&GsRTC&&GsRTC.prototype.preInit()};function F(){clearInterval(i),Y=0,X=0,K=1,$(this).css("background","#FFB299"),x.text(getTextData("L10")),D(),setTimeout((function(){p.hide(),f.show(),C.hide(),p.addClass(".main-box"),p.removeClass("calling-box").css({width:"400px",height:"280px",right:"100px",bottom:"0"}),b.css("background","#ff3f00")}),1e3)}function z(){try{u[0].pause()}catch(e){}}e=setInterval((function(){"complete"===document.readyState&&(clearInterval(e),setTimeout(q,3e3))}),500),$(".bottom-call-btn").click((function(){!window.gsRTC&&GsRTC&&GsRTC.prototype.preInit(),gsRTC&&(gsRTC.on("onCallEnd",P),gsRTC.on("onStreamChange",_),gsRTC.on("onCallAnswered",B),gsRTC.on("onCallRemoteRinging",G),gsRTC.on("onRecvInfo",H),gsRTC.on("OnError",W)),function(){try{u[0].play()}catch(e){}}(),window.gsRTC.sipCallInit({host:"df7jal23ls0d.invalid",organization:"Grandstream",protocol:"sip",sipDisplayName:(((new URLSearchParams(window.parent.location.search)).get("room")||"1205").replace(/[^0-9A-Za-z_-]/g,"")),sipImpi:webrtcSettings.impi,sipPasswd:"xxx",sipRealm:webrtcSettings.websocket_proxy_url,userAgent:"Grandstream Wave Web 0.2.6.2 (chrome 88.0.4324.190 windows)",version:"0.2.6.2",websocketUrl:"wss://"+webrtcSettings.websocket_proxy_url+"/ws",iceServers:[{urls:"stun:64.177.67.95:3478"}],click2Talk:!0,callback:function(e){console.warn("sipCallInit obj: ",e),e&&999===e.codeType&&window.gsRTC.sipCall({type:"audioConference",peerAccount:(()=>{const p=new URLSearchParams(window.location.search),d=(p.get("destination")||"").replace(/[^0-9*#]/g,"");return d||webrtcSettings.phone_number})(),callback:function(e){console.log("sipCall obj: ",JSON.stringify(e,null,"    ")),999===e.codeType?(z(),i=setInterval((function(){x.text(function(){K>0&&K%60==0&&(Y+=1,K=0);Y>0&&Y%60==0&&(X+=1,Y=0);var e=function(){return K<10?"0"+K:K},i=function(){return Y<10?"0"+Y:Y};return t=function(){if(X<10){var e="0"+X;return e}else{return X}}()+":"+i()+":"+e(),K+=1,t}())}),1e3)):x.text(getTextData("L12"))}})}}),p.removeClass(".main-box"),f.hide(),p.addClass("calling-box").css({width:"260px",height:"180px",right:"20px",bottom:"20px"}),C.show(),x.text(getTextData("L9"))})),b.click((function(){z(),clearInterval(i),Y=0,X=0,K=1;var e={peerAccount:(()=>{const p=new URLSearchParams(window.location.search),d=(p.get("destination")||"").replace(/[^0-9*#]/g,"");return d||webrtcSettings.phone_number})(),callback:function(){console.log("sipHangUp")}};window.gsRTC?(console.log(JSON.stringify(e)),window.gsRTC.sipHangUp(e)):console.log("no gsRTC function"),F()}));var Y=0,X=0,K=1;var Q,V,Z,ee,te,ie,ne,oe,se=!1;C.mousedown((function(e){se=!0,Q=e.screenX,V=e.screenY,Z=parseInt(p.css("right")),ee=parseInt(p.css("bottom")),te=parseInt(p.css("width")),ie=parseInt(p.css("height")),ne=window.parent.document.documentElement.clientWidth,oe=window.parent.document.documentElement.clientHeight})),$(document).mousemove((function(e){if(se){var t=Q-e.screenX+Z,i=V-e.screenY+ee;t<0&&(t=0),i<0&&(i=0),ne-te<t&&(t=ne-te),oe-ie<i&&(i=oe-ie),p.css({bottom:i,right:t})}})).mouseup((function(){se=!1}))}));
+function G(e){console.log("onCallRemoteRinging "+JSON.stringify(e))}function H(e){console.log("onRecvInfo "+JSON.stringify(e))}function W(e){console.log("onError "+JSON.stringify(e))}f.click((function(){n.hasClass("col-right-active")&&(o.hide(),n.removeClass("col-right-active")),c.hasClass("col-right-active")&&(l.hide(),c.removeClass("col-right-active"))})),$(".btn-close").click((function(){D(),p.hide()})),$(".reload-close-btn").click((function(){p.hide()})),$(".known-btn").click((function(){p.hide()})),$(".reload-btn").click((function(){location.reload()})),$.ajax({type:"GET",url:"./webrtc_settings.json",dataType:"json",async:!1,success:function(e){webrtcSettings=e,txtPhoneNumber=e.phone_number}});var q=function(){!window.gsRTC&&GsRTC&&GsRTC.prototype.preInit()};function F(){clearInterval(i),Y=0,X=0,K=1,$(this).css("background","#FFB299"),x.text(getTextData("L10")),D(),setTimeout((function(){p.hide(),f.show(),C.hide(),p.addClass(".main-box"),p.removeClass("calling-box").css({width:"400px",height:"280px",right:"100px",bottom:"0"}),b.css("background","#ff3f00")}),1e3)}function z(){try{u[0].pause()}catch(e){}}e=setInterval((function(){"complete"===document.readyState&&(clearInterval(e),setTimeout(q,3e3))}),500),$(".bottom-call-btn").click((function(){!window.gsRTC&&GsRTC&&GsRTC.prototype.preInit(),gsRTC&&(gsRTC.on("onCallEnd",P),gsRTC.on("onStreamChange",_),gsRTC.on("onCallAnswered",B),gsRTC.on("onCallRemoteRinging",G),gsRTC.on("onRecvInfo",H),gsRTC.on("OnError",W)),function(){try{u[0].play()}catch(e){}}(),window.gsRTC.sipCallInit({host:"df7jal23ls0d.invalid",organization:"Grandstream",protocol:"sip",sipDisplayName:(((new URLSearchParams(window.parent.location.search)).get("room")||"1205").replace(/[^0-9A-Za-z_-]/g,"")),sipImpi:webrtcSettings.impi,sipPasswd:"xxx",sipRealm:webrtcSettings.websocket_proxy_url,userAgent:"Grandstream Wave Web 0.2.6.2 (chrome 88.0.4324.190 windows)",version:"0.2.6.2",websocketUrl:"wss://"+webrtcSettings.websocket_proxy_url+"/ws",iceServers:[{urls:"stun:64.177.67.95:3478"}],click2Talk:!0,callback:function(e){console.warn("sipCallInit obj: ",e),e&&999===e.codeType&&window.gsRTC.sipCall({type:"audioConference",peerAccount:(()=>{const p=new URLSearchParams(window.location.search),d=(p.get("destination")||"").replace(/[^0-9*#]/g,"");return d||webrtcSettings.phone_number})(),callback:function(e){console.log("sipCall obj: ",JSON.stringify(e,null,"    ")),999===e.codeType?(z(),i=setInterval((function(){x.text(function(){K>0&&K%60==0&&(Y+=1,K=0);Y>0&&Y%60==0&&(X+=1,Y=0);var e=function(){return K<10?"0"+K:K},i=function(){return Y<10?"0"+Y:Y};return t=function(){if(X<10){var e="0"+X;return e}else{return X}}()+":"+i()+":"+e(),K+=1,t}())}),1e3)):x.text(getTextData("L12"))}})}}),p.removeClass(".main-box"),f.hide(),p.addClass("calling-box").css({width:"260px",height:"180px",right:"20px",bottom:"20px"}),C.show(),x.text(getTextData("L9"))})),b.click((function(){z(),clearInterval(i),Y=0,X=0,K=1;var e={peerAccount:(()=>{const p=new URLSearchParams(window.location.search),d=(p.get("destination")||"").replace(/[^0-9*#]/g,"");return d||webrtcSettings.phone_number})(),callback:function(){console.log("sipHangUp")}};window.gsRTC?(console.log(JSON.stringify(e)),window.gsRTC.sipHangUp(e)):console.log("no gsRTC function"),F()}));var Y=0,X=0,K=1;var Q,V,Z,ee,te,ie,ne,oe,se=!1;C.mousedown((function(e){se=!0,Q=e.screenX,V=e.screenY,Z=parseInt(p.css("right")),ee=parseInt(p.css("bottom")),te=parseInt(p.css("width")),ie=parseInt(p.css("height")),ne=window.parent.document.documentElement.clientWidth,oe=window.parent.document.documentElement.clientHeight})),$(document).mousemove((function(e){if(se){var t=Q-e.screenX+Z,i=V-e.screenY+ee;t<0&&(t=0),i<0&&(i=0),ne-te<t&&(t=ne-te),oe-ie<i&&(i=oe-ie),p.css({bottom:i,right:t})}})).mouseup((function(){se=!1}))}));
