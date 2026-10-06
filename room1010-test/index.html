@@ -55,18 +55,19 @@ const ROOM='1010';
 const layer=document.getElementById('callLayer');
 const frame=document.getElementById('frameDialog');
 function openCall(service){
-  // Current SDK is tied to the single Integrated Customer Service Click2Call queue.
-  // We pass room + requested service so the UI is ready for per-service routing tests next.
-  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service);
   layer.style.display='flex';
-  frame.onload=()=>{
-    const start=()=>{
-      try{
-        if(frame.contentWindow && typeof frame.contentWindow.startDevice==='function') frame.contentWindow.startDevice();
-        else setTimeout(start,200);
-      }catch(e){console.error(e)}
-    }; start();
+  const start=()=>{
+    try{
+      if(frame.contentWindow && typeof frame.contentWindow.startDevice==='function'){
+        frame.contentWindow.startDevice();
+      }else{
+        setTimeout(start,200);
+      }
+    }catch(e){setTimeout(start,300)}
   };
+  frame.onload=()=>start();
+  frame.src='../anonymousWebRTC_room1205/webRTC.html?room='+encodeURIComponent(ROOM)+'&service='+encodeURIComponent(service)+'&v=2';
+  setTimeout(start,400);
 }
 document.querySelectorAll('[data-service]').forEach(b=>b.onclick=()=>openCall(b.dataset.service));
 document.getElementById('close').onclick=()=>{layer.style.display='none';frame.src='about:blank'};
