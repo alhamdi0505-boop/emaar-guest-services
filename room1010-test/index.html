@@ -12,13 +12,13 @@ const oldSetLang=setLang;
 setLang=function(l){oldSetLang(l);document.getElementById('roomBadge').textContent=(l==='ar'?'غرفة '+ROOM+' · ROOM '+ROOM:'ROOM '+ROOM+' · غرفة '+ROOM);}
 const layer=document.getElementById('callLayer'),frame=document.getElementById('frameDialog');
 const SERVICE_DESTINATIONS={
-  reception:'5554',
-  management:'',
-  assistance:'',
-  roomservice:'',
-  security:'',
-  maintenance:'',
-  housekeeping:''
+  reception:'2000',
+  management:'2001',
+  assistance:'2002',
+  security:'2003',
+  roomservice:'2004',
+  housekeeping:'2005',
+  maintenance:'2006'
 };
 function startServiceCall(service){
   const destination=SERVICE_DESTINATIONS[service]||'';
