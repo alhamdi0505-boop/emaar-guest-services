@@ -48,11 +48,19 @@ $((function(){var e,i,n=$("#audioSourceContainer"),o=$("#audioSource"),s=$("#aud
       connectionState:pc&&pc.connectionState,
       iceConnectionState:pc&&pc.iceConnectionState,
       signalingState:pc&&pc.signalingState,
-      audioSender:audioSender&&audioSender.track?{enabled:audioSender.track.enabled,muted:audioSender.track.muted,readyState:audioSender.track.readyState,label:audioSender.track.label}:null,
+      audioSender:audioSender&&audioSender.track?{
+        enabled:audioSender.track.enabled,
+        muted:audioSender.track.muted,
+        readyState:audioSender.track.readyState,
+        label:audioSender.track.label,
+        transceiver:(pc&&pc.getTransceivers?(()=>{const tr=pc.getTransceivers().find(t=>t.sender===audioSender);return tr?{direction:tr.direction,currentDirection:tr.currentDirection,mid:tr.mid}:null})():null)
+      }:null,
       localAudioDirection:dir(localSdp),
       remoteAudioDirection:dir(remoteSdp),
       senderMedia,
-      outboundAudio:outbound,
+      outboundAudio:Object.assign({},outbound||{},{
+        mediaSource:senderMedia||null
+      }),
       transceivers:trans
     };
     console.warn("AUDIO_DIAG",diag);
