@@ -47,7 +47,7 @@ window.addEventListener('message',function(ev){
   if(ev.data&&ev.data.type==='webrtc-service-dtmf'){
     const box=document.getElementById('webrtcDiag');
     box.style.display='block';
-    box.textContent='SERVICE DTMF SENT: '+ev.data.digit+' ('+ev.data.reason+')\n'+box.textContent;
+    box.textContent='SERVICE DTMF SENT: '+ev.data.digit+' via '+(ev.data.method||'unknown')+' ('+ev.data.reason+')\n'+box.textContent;
     return;
   }
   if(ev.data&&ev.data.type==='webrtc-share-audio'){
